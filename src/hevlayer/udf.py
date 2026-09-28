@@ -68,6 +68,7 @@ async def run_udf_worker(
     signature = inspect.signature(fn)
     wants_tpuf = "tpuf" in signature.parameters
     output_attr = metadata.get("output")
+    output_kind = metadata.get("kind")
     if output_attr is not None:
         if not isinstance(output_attr, str) or not output_attr.strip():
             raise ValueError("udf output metadata must be a non-empty attribute name")
@@ -98,7 +99,9 @@ async def run_udf_worker(
                     if inspect.isawaitable(output):
                         output = await output
                     complete_item: dict[str, Any] = {"namespace": item.namespace, "id": item.id}
-                    if output_attr:
+                    if output_kind == "embedding":
+                        complete_item["vector"] = output
+                    elif output_attr:
                         complete_item["attributes"] = {output_attr: output}
                     elif output is not None:
                         raise PermanentError("UDF returned a value but @udf(output=...) is not set")

@@ -1,7 +1,7 @@
 # hevlayer Python SDK
 
 > **Generated mirror — do not send PRs here.**
-> This repository is published automatically from the private `hev/layer`
+> This repository is published automatically from the private `hev/layer-pro`
 > monorepo, derived from the gateway's OpenAPI spec. Edits to client code here
 > are overwritten on the next release. File bugs and requests as
 > [issues](https://github.com/hev/layer-python/issues); fixes land upstream and
@@ -23,7 +23,6 @@ async def main() -> None:
     client = AsyncHevlayer(
         api_key=os.environ["HEVLAYER_API_KEY"],
         base_url="https://aws-us-east-1.hevlayer.com",
-        turbopuffer_api_key=os.environ.get("TURBOPUFFER_API_KEY"),
     )
     async with client:
         response = await client.query_namespace(
@@ -47,27 +46,21 @@ async def main() -> None:
 asyncio.run(main())
 ```
 
-## Direct Turbopuffer Fallback
-
-When configured with `turbopuffer_api_key` (or `TURBOPUFFER_API_KEY`),
-`AsyncHevlayer` falls through to Turbopuffer direct if the gateway is
-unreachable for simple vector queries and raw Turbopuffer-compatible methods
-such as `write_namespace`, `query_turbopuffer_namespace`, and
-`list_turbopuffer_namespaces`. Layer-only methods such as fetch, warm jobs,
-pipelines, UDFs, and `nearest_to_id` queries still fail fast because they
-depend on gateway state. Disable this with `fallback_to_turbopuffer=False`.
-
 ## Generated Operations
 
+- `authenticate_key`
+- `batch_query_namespace`
 - `branch_namespace`
 - `claim_documents`
 - `claim_udf_items`
 - `complete_udf_items`
 - `copy_namespace`
+- `create_checkpoint`
 - `create_pipeline`
 - `create_scan`
 - `create_snapshot`
 - `create_udf`
+- `delete_key`
 - `delete_namespace`
 - `delete_pipeline`
 - `delete_scan`
@@ -78,7 +71,15 @@ depend on gateway state. Disable this with `fallback_to_turbopuffer=False`.
 - `fail_udf_items`
 - `fetch_document`
 - `fetch_documents`
+- `get_blob`
+- `get_checkpoint`
+- `get_cost_rate_card`
+- `get_cost_snapshot`
+- `get_cost_timeseries`
+- `get_key`
+- `get_license`
 - `get_metric_catalog_entry`
+- `get_namespace_capabilities`
 - `get_namespace_metadata`
 - `get_namespace_snapshot`
 - `get_pipeline_document_chunks`
@@ -86,15 +87,23 @@ depend on gateway state. Disable this with `fallback_to_turbopuffer=False`.
 - `get_scan`
 - `get_scan_results`
 - `get_snapshot_job`
+- `get_snapshot_policy`
 - `get_turbopuffer_namespace_schema`
 - `get_turbopuffer_v1_namespace_metadata`
 - `get_udf`
 - `get_udf_status`
+- `get_vectorstore`
+- `get_vector_store_capabilities`
+- `get_warehouse`
 - `get_warm_job`
 - `heartbeat_documents`
 - `heartbeat_udf_items`
 - `hint_cache_warm`
+- `import_namespace`
+- `init_namespace`
+- `list_checkpoints`
 - `list_clickstream`
+- `list_keys`
 - `list_metrics_catalog`
 - `list_namespace_history`
 - `list_namespaces`
@@ -105,11 +114,17 @@ depend on gateway state. Disable this with `fallback_to_turbopuffer=False`.
 - `list_snapshot_jobs`
 - `list_turbopuffer_namespaces`
 - `list_udfs`
+- `list_vectorstores`
+- `list_warehouses`
 - `list_warm_jobs`
-- `multi_query_turbopuffer_namespace`
+- `mint_key`
 - `pause_udf`
+- `put_blob`
 - `put_pipeline_document_chunks`
 - `put_pipeline_document_vectors`
+- `put_snapshot_policy`
+- `query`
+- `query_agent`
 - `query_metrics`
 - `query_metrics_api_v1`
 - `query_metrics_range`
@@ -118,8 +133,10 @@ depend on gateway state. Disable this with `fallback_to_turbopuffer=False`.
 - `query_turbopuffer_namespace`
 - `reset_failed_udf`
 - `resume_udf`
+- `revoke_key`
 - `set_documents_stage`
 - `update_turbopuffer_namespace_metadata`
 - `update_turbopuffer_namespace_schema`
+- `upsert_udf`
 - `warm_cache`
 - `write_namespace`
